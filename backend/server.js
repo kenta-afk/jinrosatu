@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { ApolloServer, gql } = require('apollo-server');
 const jwt = require('jsonwebtoken');
 const config = require('./config');

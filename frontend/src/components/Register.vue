@@ -4,11 +4,11 @@
         <form @submit.prevent="register">
             <div>
                 <label for="email">Email:</label>
-                <input type="email" v-model="email" required />
+                <input type="email" id="email" v-model="email" required autocomplete="email" />
             </div>
             <div>
                 <label for="password">Password:</label>
-                <input type="password" v-model="password" required />
+                <input type="password" id="password" v-model="password" required autocomplete="new-password" />
             </div>
             <button type="submit">Register</button>
         </form>
