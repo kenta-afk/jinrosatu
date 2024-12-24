@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Login from '../components/Login.vue'
-import HelloWorld from '../components/HelloWorld.vue'
-import Register from '../components/Register.vue'
+import Login from '../pages/Login.vue'
+import HelloWorld from '../pages/HelloWorld.vue'
+import Register from '../pages/Register.vue'
 
 const routes = [
     { path: '/', component: HelloWorld },

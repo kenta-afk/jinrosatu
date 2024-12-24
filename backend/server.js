@@ -1,7 +1,7 @@
 require('dotenv').config();
 const { ApolloServer, gql } = require('apollo-server');
 const jwt = require('jsonwebtoken');
-const config = require('./config');
+const config = require('./config/config');
 const { authenticate } = require('./auth');
 
 const users = [];
