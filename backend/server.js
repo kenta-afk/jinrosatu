@@ -1,44 +1,74 @@
 require('dotenv').config();
 const { ApolloServer, gql } = require('apollo-server');
 const jwt = require('jsonwebtoken');
+const mysql = require('mysql2/promise');
 const config = require('./config/config');
 const { authenticate } = require('./auth');
 
-const users = [];
+const dbConfig = {
+    host: process.env.MYSQL_HOST || 'mysql',
+    user: process.env.MYSQL_USER,
+    password: process.env.MYSQL_PASSWORD,
+    database: process.env.MYSQL_DATABASE,
+    port: 3306,
+};
 
 const typeDefs = gql`
     type User {
         id: ID!
+        name: String!
         email: String!
         password: String!
     }
 
     type Query {
         login(email: String!, password: String!): String
+        me: User
     }
 
     type Mutation {
-        register(email: String!, password: String!): String
+        register(name: String!, email: String!, password: String!): String
     }
 `;
 
 const resolvers = {
     Query: {
-        login: (_, { email, password }) => {
-            const user = users.find(user => user.email === email && user.password === password);
-            if (!user) {
-                throw new Error('Invalid credentials');
+        login: async (_, { email, password }) => {
+            try {
+                const connection = await mysql.createConnection(dbConfig);
+                const [rows] = await connection.execute('SELECT * FROM users WHERE email = ? AND password = ?', [email, password]);
+                if (rows.length === 0) {
+                    throw new Error('Invalid credentials');
+                }
+                const user = rows[0];
+                const token = jwt.sign({ id: user.id, email: user.email }, config.jwt.secret, { expiresIn: '1d' });
+                return token;
+            } catch (error) {
+                console.error('Error during login:', error);
+                throw new Error('Login failed');
             }
-            const token = jwt.sign({ id: user.id, email: user.email }, config.jwt.secret, config.jwt.options);
-            return token;
+        },
+        me: async (_, __, { user }) => {
+            if (!user) {
+                throw new Error('Not authenticated');
+            }
+            return user;
         }
     },
     Mutation: {
-        register: (_, { email, password }) => {
-            const user = { id: users.length + 1, email, password };
-            users.push(user);
-            const token = jwt.sign({ id: user.id, email: user.email }, config.jwt.secret, config.jwt.options);
-            return token;
+        register: async (_, { name, email, password }) => {
+            try {
+                const connection = await mysql.createConnection(dbConfig);
+                await connection.execute('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, password]);
+                const [rows] = await connection.execute('SELECT * FROM users WHERE email = ?', [email]);
+                const user = rows[0];
+                const token = jwt.sign({ id: user.id, email: user.email }, config.jwt.secret, { expiresIn: '1d' });
+                return token;
+            } catch (error) {
+                console.error('Error during registration:', error);
+                console.error('Error details:', error);
+                throw new Error('Registration failed');
+            }
         }
     }
 };

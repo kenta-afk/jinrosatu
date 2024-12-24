@@ -1,23 +1,14 @@
 <template>
-  <button type="button" @click="logout">Logout</button>
+    <button @click="logout">Logout</button>
 </template>
 
-<script>
+<script setup>
 import { useRouter } from 'vue-router'
 
-export default {
-  name: 'LogoutButton',
-  setup() {
-    const router = useRouter()
+const router = useRouter()
 
-    const logout = () => {
-      sessionStorage.removeItem('token')
-      router.push('/login')
-    }
-
-    return {
-      logout
-    }
-  }
+const logout = () => {
+    sessionStorage.removeItem('token')
+    router.push('/login')
 }
 </script>

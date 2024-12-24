@@ -4,11 +4,11 @@
         <form @submit.prevent="login">
             <div>
                 <label for="email">Email:</label>
-                <input type="email" v-model="email" required />
+                <input type="email" id="email" v-model="email" required />
             </div>
             <div>
                 <label for="password">Password:</label>
-                <input type="password" v-model="password" required />
+                <input type="password" id="password" v-model="password" required />
             </div>
             <button type="submit">Login</button>
         </form>
@@ -27,12 +27,10 @@ const router = useRouter()
 
 const login = async () => {
     try {
-        const token = sessionStorage.getItem('token')
         const response = await fetch('http://localhost:4000/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': token ? `Bearer ${token}` : ''
             },
             body: JSON.stringify({
                 query: `
@@ -50,7 +48,9 @@ const login = async () => {
         if (result.errors) {
             throw new Error(result.errors[0].message)
         }
-        router.push('/')
+        const token = result.data.login
+        sessionStorage.setItem('token', token)
+        router.push('/top')
     } catch (err) {
         error.value = err.message
     }

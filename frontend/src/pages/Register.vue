@@ -3,12 +3,16 @@
         <h1>Register</h1>
         <form @submit.prevent="register">
             <div>
+                <label for="name">Name:</label>
+                <input type="text" id="name" v-model="name" required />
+            </div>
+            <div>
                 <label for="email">Email:</label>
-                <input type="email" id="email" v-model="email" required autocomplete="email" />
+                <input type="email" id="email" v-model="email" required />
             </div>
             <div>
                 <label for="password">Password:</label>
-                <input type="password" id="password" v-model="password" required autocomplete="new-password" />
+                <input type="password" id="password" v-model="password" required />
             </div>
             <button type="submit">Register</button>
         </form>
@@ -20,6 +24,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 
+const name = ref('')
 const email = ref('')
 const password = ref('')
 const error = ref('')
@@ -34,11 +39,12 @@ const register = async () => {
             },
             body: JSON.stringify({
                 query: `
-          mutation Register($email: String!, $password: String!) {
-            register(email: $email, password: $password)
+          mutation Register($name: String!, $email: String!, $password: String!) {
+            register(name: $name, email: $email, password: $password)
           }
         `,
                 variables: {
+                    name: name.value,
                     email: email.value,
                     password: password.value,
                 },
@@ -50,7 +56,7 @@ const register = async () => {
         }
         const token = result.data.register
         sessionStorage.setItem('token', token)
-        router.push('/login')
+        router.push('/top')
     } catch (err) {
         error.value = err.message
     }
