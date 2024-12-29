@@ -1,10 +1,17 @@
 <template>
     <h1>人狼殺</h1>
-    <button @click="register">register</button>
-    <button @click="login">login</button>
+    <v-btn @click="register" class="button">
+      <v-icon>mdi-login</v-icon>
+      Register
+    </v-btn>
+    <v-btn @click="login" class="button">
+      <v-icon>mdi-logout</v-icon>
+      Login
+    </v-btn>
 </template>
 <script setup>
 import { useRouter } from 'vue-router'
+
 
 const router = useRouter()
 
@@ -18,3 +25,4 @@ const login = () => {
 </script>
 <style scoped>
 </style>
+
