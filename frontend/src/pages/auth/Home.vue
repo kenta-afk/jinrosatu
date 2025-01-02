@@ -34,8 +34,8 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import button from '../../styles/button.module.css'
-import authPage from '../../styles/authPage.module.css'
+import button from '../../styles/auth/button.module.css'
+import authPage from '../../styles/auth/authPage.module.css'
 
 
 const router = useRouter()

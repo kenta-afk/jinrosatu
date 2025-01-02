@@ -41,9 +41,9 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import button from '../../styles/button.module.css'
-import authPage from '../../styles/authPage.module.css'
-import form from '../../styles/form.module.css'
+import button from '../../styles/auth/button.module.css'
+import authPage from '../../styles/auth/authPage.module.css'
+import form from '../../styles/auth/form.module.css'
 
 const email = ref('')
 const password = ref('')

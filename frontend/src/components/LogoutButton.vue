@@ -14,7 +14,7 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import styles from '../styles/button.module.css'
+import styles from '../styles/auth/button.module.css'
 
 const router = useRouter()
 
