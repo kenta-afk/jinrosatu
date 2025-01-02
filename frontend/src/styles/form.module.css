@@ -1,0 +1,20 @@
+.formWrapper {
+    width: 300px;
+}
+
+:deep(.v-text-field .v-field-label) {
+    color: #fff !important;
+}
+
+:deep(.v-text-field .v-field-input input) {
+    color: #fff !important;
+}
+
+:deep(.v-text-field .v-field-outline__notch) {
+    border-color: #fff !important;
+}
+
+.error-text {
+    color: red;
+    margin-top: 10px;
+}

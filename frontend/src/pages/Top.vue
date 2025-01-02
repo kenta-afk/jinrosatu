@@ -1,5 +1,11 @@
 <template>
-  <LogoutButton />
+  <v-app theme="dark">
+    <v-main>
+      <div class="container">
+        <LogoutButton />
+      </div>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -13,7 +19,10 @@ export default {
 </script>
 
 <style scoped>
-.read-the-docs {
-  color: #888;
+
+.container {
+  display: flex;
+  background-color: #000;
 }
+
 </style>

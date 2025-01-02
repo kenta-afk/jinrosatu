@@ -1,9 +1,17 @@
 <template>
   <v-app theme="dark">
     <v-main>
-      <div class="container">
-        <h1>Login</h1>
-        <v-form @submit.prevent="login" v-model="valid" class="form-wrapper">
+      <div :class="authPage.container">
+        <h1 :class="authPage.h1">Register</h1>
+        <v-form @submit.prevent="register" v-model="valid" :class="form.formWrapper">
+          <v-text-field
+            v-model="name"
+            label="Name"
+            required
+            variant="outlined"
+            color="white"
+            dense
+          ></v-text-field>
           <v-text-field
             v-model="email"
             label="Email"
@@ -24,14 +32,15 @@
           ></v-text-field>
           <v-btn
             class="bg-grey-darken-3"
+            :class="button.hoverButton"
             type="submit"
             variant="outlined"
             :disabled="!valid"
           >
-            Login
+            Register
           </v-btn>
         </v-form>
-        <p v-if="error" class="error-text">{{ error }}</p>
+        <p v-if="error" :class="form.error-text">{{ error }}</p>
       </div>
     </v-main>
   </v-app>
@@ -40,37 +49,39 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import button from '../../styles/button.module.css'
+import authPage from '../../styles/authPage.module.css'
+import form from '../../styles/form.module.css'
 
+
+const name = ref('')
 const email = ref('')
 const password = ref('')
 const error = ref('')
 const valid = ref(false)
 const router = useRouter()
 
-const login = async () => {
+const register = async () => {
   try {
     const response = await fetch('http://localhost:4000/', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         query: `
-          query Login($email: String!, $password: String!) {
-            login(email: $email, password: $password)
+          mutation Register($name: String!, $email: String!, $password: String!) {
+            register(name: $name, email: $email, password: $password)
           }
         `,
         variables: {
+          name: name.value,
           email: email.value,
           password: password.value,
         },
       }),
     })
     const result = await response.json()
-    if (result.errors) {
-      throw new Error(result.errors[0].message)
-    }
-    const token = result.data.login
+    if (result.errors) throw new Error(result.errors[0].message)
+    const token = result.data.register
     sessionStorage.setItem('token', token)
     router.push('/top')
   } catch (err) {
@@ -78,45 +89,3 @@ const login = async () => {
   }
 }
 </script>
-
-<style scoped>
-.container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: #000;
-}
-
-h1 {
-  color: #fff;
-  margin-bottom: 20px;
-  text-align: center;
-}
-
-.form-wrapper {
-  width: 300px;
-}
-
-
-:deep(.v-text-field .v-field-label) {
-  color: #fff !important;
-}
-:deep(.v-text-field .v-field-input input) {
-  color: #fff !important;
-}
-:deep(.v-text-field .v-field-outline__notch) {
-  border-color: #fff !important;
-}
-
-.error-text {
-  color: red;
-  margin-top: 10px;
-}
-
-.v-btn:hover {
-  background-color: #f64343 !important;
-  transition: background-color 0.1s ease;
-}
-</style>
