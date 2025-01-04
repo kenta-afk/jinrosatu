@@ -1,0 +1,15 @@
+.blobCont {
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background-color: #1A1A1A;
+    filter: grayscale(40%) brightness(60%) blur(2px);
+    z-index: -1;
+
+}
+
+.HomeWrapper {
+    padding: 30px;
+    border-radius: 15px;
+    backdrop-filter: blur(8px);
+}

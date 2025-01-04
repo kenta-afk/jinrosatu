@@ -4,11 +4,15 @@
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #000;
+    background: url('https://images.unsplash.com/photo-1606686615793-8ccc874ff3ef?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed;
+    background-size: cover;
+    position: relative;
 }
 
-h1 {
-    color: #fff;
-    margin-bottom: 20px;
-    text-align: center;
+.h1 {
+    font-size: 4rem;
+        margin-bottom: 30px;
+        color: #FFD700;
+        text-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+        font-family: 'Cinzel', serif;
 }
